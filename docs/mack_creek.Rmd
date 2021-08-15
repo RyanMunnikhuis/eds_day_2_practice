@@ -1,0 +1,42 @@
+---
+title: "salamander"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(janitor)
+library(here)
+library(tidyr)
+```
+
+```{r}
+mack_verts = read_csv(here::here("data", "AS00601.csv")) %>%  janitor::clean_names()
+
+
+mc_wt_5 = mack_verts$weight[5]
+mc_length_8_20 = mack_verts$length1[8:20]
+mc_data = mack_verts$sampledate
+
+mc_data
+```
+```{r}
+mc_salamanders = mack_verts %>% 
+  filter(species == "DITE")
+
+ggplot(data = mc_salamanders, aes(x = length1, y = weight)) + 
+  geom_point(aes(color = weight), alpha = 0.5) + 
+  theme_minimal() 
+
+```
+```{r}
+mc_trout = mack_verts %>% 
+  filter(species == "ONCL")
+
+ggplot(data = mc_trout, aes(x = length1, y = weight)) + 
+  geom_point(aes(color = reach)) + 
+  facet_wrap(~reach)
+
+```
+
